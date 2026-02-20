@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set("Asia/Jakarta");
+
 session_start();
 if (!isset($_SESSION['login'])) {
     header("Location: login.php");
@@ -152,21 +154,21 @@ if (!empty($edit_id)) {
         </div>
 
         <div class="form-row">
-            <div class="form-group">
-                <label>Jam Keluar</label>
-                <input type="time" name="jam_out" value="<?= date('H:i') ?>">
-            </div>
-            <div class="form-group">
-                <label>Jam Masuk</label>
-                <input type="time" name="jam_in" value="<?= date('H:i') ?>">
-            </div>
-        </div>
+    <div class="form-group">
+        <label>Jam Keluar</label>
+        <input type="time" name="jam_out" value="<?= date('H:i') ?>">
+    </div>
+    <div class="form-group">
+        <label>Jam Masuk</label>
+        <input type="time" name="jam_in" value="<?= date('H:i') ?>">
+    </div>
+</div>
 
         <hr>
 
         <div class="form-row">
             <div class="form-group">
-                <label>BU</label>
+                <label>BU 1</label>
                 <input type="text" name="bu" list="data_bu" placeholder="Pilih atau ketik BU...">
                 <datalist id="data_bu">
                     <?= $bu_list ?>
@@ -180,7 +182,7 @@ if (!empty($edit_id)) {
 
         <div class="form-row">
             <div class="form-group">
-                <label>Material</label>
+                <label>Material 1</label>
                 <input type="text" name="material" list="data_material" placeholder="Pilih atau ketik Material...">
                 <datalist id="data_material">
                     <?= $material_list ?>
@@ -194,7 +196,7 @@ if (!empty($edit_id)) {
 
         <div class="form-row">
             <div class="form-group">
-                <label>Keterangan</label>
+                <label>Keterangan 1</label>
                 <input type="text" name="ket">
             </div>
             <div class="form-group">
@@ -205,17 +207,15 @@ if (!empty($edit_id)) {
 
         <hr>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label>KM Datang</label>
-                <input type="number" name="km_datang" id="km_datang">
-            </div>
-        </div>
-
-        <div class="form-row">
+         <div class="form-row">
             <div class="form-group">
                 <label>KM Keluar</label>
                 <input type="number" name="km_keluar" id="km_keluar">
+            </div>
+        
+            <div class="form-group">
+                <label>KM Datang</label>
+                <input type="number" name="km_datang" id="km_datang">
             </div>
         </div>
 

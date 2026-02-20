@@ -38,15 +38,15 @@ body{
     background:linear-gradient(135deg,#3b5f6f,#4fa3b1);
 }
 .login-box{
-    background:#fff;padding:25px 30px;width:300px;border-radius:8px;
+    background:#fff;padding:45px 60px;width:500px;border-radius:9px;
     box-shadow:0 4px 10px rgba(0,0,0,0.2);text-align:center;
 }
 .form-group{text-align:left;margin-bottom:12px;}
-label{font-size:14px;font-weight:bold;}
-input{width:100%;padding:8px;margin-top:4px;border:1px solid #ccc;border-radius:4px;}
-.error{color:red;font-size:12px;margin-bottom:10px;}
+label{font-size:24px;font-weight:bold;}
+input{width:100%;padding:10px;margin-top:5px;border:1px solid #ccc;border-radius:4px;}
+.error{color:red;font-size:22px;margin-bottom:10px;}
 button{
-    width:100%;padding:10px;border:none;background:#2fa4a9;color:white;
+    width:100%;padding:20px;border:none;background:#2fa4a9;color:black;
     border-radius:5px;cursor:pointer;
 }
 </style>
@@ -54,7 +54,7 @@ button{
 <body>
 
 <div class="login-box">
-<h2>Login</h2>
+<h1>Login</h1>
 
 <form method="post">
     <div class="form-group">
@@ -71,7 +71,7 @@ button{
         <div class="error"><?= $error ?></div>
     <?php } ?>
 
-    <button type="submit" name="login">Masuk</button>
+    <button type="submit" name="login"><H1>Masuk</H1></button>
 </form>
 </div>
 
