@@ -235,6 +235,6 @@ Data tidak ditemukan
 <p style="text-align:center;font-size:11px;color:#888;">
 * Klik baris untuk mengedit data
 </p>
-<a href="export_xls.php" class="btn btn-blue btn-right">&larr; EXPORT</a>
+<a href="export_xls.php?search_date=<?= urlencode($search_date) ?>&search_nopol=<?= urlencode($search_nopol) ?>" class="btn btn-blue btn-right">&larr; EXPORT</a>
 </body>
 </html>
