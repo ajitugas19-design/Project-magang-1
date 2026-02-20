@@ -101,6 +101,9 @@ body {
     cursor:pointer; 
     text-decoration:none;
 }
+.btn-right{
+    float: right;
+}
 
 .btn-gray { background:#6c757d; color:white; }
 .btn-blue { background:#007bff; color:white; }
@@ -232,6 +235,6 @@ Data tidak ditemukan
 <p style="text-align:center;font-size:11px;color:#888;">
 * Klik baris untuk mengedit data
 </p>
-
+<a href="export_xls.php" class="btn btn-blue btn-right">&larr; EXPORT</a>
 </body>
 </html>
