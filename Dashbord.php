@@ -111,7 +111,7 @@ if (!empty($edit_id)) {
     </div>
 
     <form method="POST" action="simpan.php">
-        <div class="form-row">
+        <div class="form-row"style="background-color: grey; padding:5px;">
             <div class="form-group">
                 <label>Kode</label>
                 <input type="text" name="kode" value="<?= $kode_baru ?>" readonly>
@@ -119,87 +119,86 @@ if (!empty($edit_id)) {
         </div>
 
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: lime; padding:5px;">
                 <label>Nopol</label>
                 <input type="text" name="nopol">
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
                 <label>Kendaraan</label>
                 <input type="text" name="kendaraan">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: lime; padding:5px;">
                 <label>Nama Sopir</label>
                 <input type="text" name="sopir">
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
     <label>Status</label>
     <input type="text" id="statusInput" name="status" value="CLOSE" class="form-control">
-</div>
+    </div>
         </div>
 
         <hr>
 
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: lime; padding:5px;">
                 <label>Tanggal Keluar</label>
                 <input type="date" name="tgl_out" value="<?= date('Y-m-d') ?>">
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
                 <label>Tanggal Masuk</label>
                 <input type="date" name="tgl_in" value="<?= date('Y-m-d') ?>">
             </div>
         </div>
 
         <div class="form-row">
-    <div class="form-group">
+    <div class="form-group"style="background-color: lime; padding:5px;">
         <label>Jam Keluar</label>
         <input type="time" name="jam_out" value="<?= date('H:i') ?>">
     </div>
-    <div class="form-group">
+    <div class="form-group"style="background-color: red; padding:5px;">
         <label>Jam Masuk</label>
         <input type="time" name="jam_in" value="<?= date('H:i') ?>">
     </div>
 </div>
-
         <hr>
 
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: lime; padding:5px;">
                 <label>BU 1</label>
                 <input type="text" name="bu" list="data_bu" placeholder="Pilih atau ketik BU...">
                 <datalist id="data_bu">
                     <?= $bu_list ?>
                 </datalist>
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
                 <label>BU 2</label>
                 <input type="text" name="bu2" list="data_bu" placeholder="Pilih atau ketik BU...">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: lime; padding:5px;">
                 <label>Material 1</label>
                 <input type="text" name="material" list="data_material" placeholder="Pilih atau ketik Material...">
                 <datalist id="data_material">
                     <?= $material_list ?>
                 </datalist>
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
                 <label>Material 2</label>
                 <input type="text" name="material2" list="data_material" placeholder="Pilih atau ketik Material...">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: lime; padding:5px;">
                 <label>Keterangan 1</label>
                 <input type="text" name="ket">
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
                 <label>Keterangan 2</label>
                 <input type="text" name="ket2">
             </div>
@@ -208,19 +207,19 @@ if (!empty($edit_id)) {
         <hr>
 
          <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: lime; padding:5px;">
                 <label>KM Keluar</label>
                 <input type="number" name="km_keluar" id="km_keluar">
             </div>
         
-            <div class="form-group">
-                <label>KM Datang</label>
+            <div class="form-group"style="background-color: red; padding:5px;">
+                <label>KM Masuk</label>
                 <input type="number" name="km_datang" id="km_datang">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: gray; padding:5px;">
                 <label>KM Total</label>
                 <input type="number" name="km_total" id="km_total" readonly style="font-weight: bold; color: blue;">
             </div>
@@ -243,7 +242,7 @@ const total = document.getElementById("km_total");
 function hitungKM(){
     let d = parseInt(datang.value) || 0;
     let k = parseInt(keluar.value) || 0;
-    total.value = k - d;
+    total.value = d - k;
 }
 
 datang.addEventListener("input", hitungKM);

@@ -76,7 +76,7 @@ while ($row = mysqli_fetch_assoc($query_material)) {
             font-weight: 500;
         }
         .btn-back {
-            background-color: #6c757d !important;
+            background-color: #077fe9 !important;
         }
     </style>
 </head>
@@ -102,7 +102,9 @@ while ($row = mysqli_fetch_assoc($query_material)) {
         <div class="left">Login sebagai: <b><?= $_SESSION['nama']; ?></b></div>
         <h2 style="margin: 0;">FORM EDIT KM</h2>
         <div class="right">
-            <a href="Cekdata.php?search_nopol=<?= urlencode($search_nopol) ?>&search_date=<?= urlencode($search_date) ?>" class="btn-back">Cek Data</a>
+            <a href="Cekdata.php?search_nopol=<?= urlencode($search_nopol)
+             ?>&search_date=<?= urlencode($search_date) 
+             ?>" class="btn-back">⟵ KEMBALI</a>
         </div>
     </div>
 
@@ -114,29 +116,29 @@ while ($row = mysqli_fetch_assoc($query_material)) {
         <input type="hidden" name="search_date" value="<?= htmlspecialchars($search_date) ?>">
         
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: grey; padding:5px;">
                 <label>Kode</label>
                 <input type="text" name="kode" value="<?= htmlspecialchars($data['kode']) ?>" readonly>
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: lime; padding:5px;">
                 <label>Nopol</label>
                 <input type="text" name="nopol" value="<?= htmlspecialchars($data['nopol']) ?>">
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
                 <label>Kendaraan</label>
                 <input type="text" name="kendaraan" value="<?= htmlspecialchars($data['kendaraan']) ?>">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: lime; padding:5px;">
                 <label>Nama Sopir</label>
                 <input type="text" name="sopir" value="<?= htmlspecialchars($data['sopir']) ?>">
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
                 <label>Status</label>
                 <input type="text" id="statusInput" name="status" value="<?= htmlspecialchars($data['status']) ?>" class="form-control">
             </div>
@@ -145,22 +147,22 @@ while ($row = mysqli_fetch_assoc($query_material)) {
         <hr>
 
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: lime; padding:5px;">
                 <label>Tanggal Keluar</label>
                 <input type="date" name="tgl_out" value="<?= htmlspecialchars($data['tgl_out']) ?>">
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
                 <label>Tanggal Masuk</label>
                 <input type="date" name="tgl_in" value="<?= htmlspecialchars($data['tgl_in']) ?>">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: lime; padding:5px;">
                 <label>Jam Keluar</label>
                 <input type="time" name="jam_out" value="<?= htmlspecialchars($data['jam_out']) ?>">
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
                 <label>Jam Masuk</label>
                 <input type="time" name="jam_in" value="<?= htmlspecialchars($data['jam_in']) ?>">
             </div>
@@ -169,39 +171,39 @@ while ($row = mysqli_fetch_assoc($query_material)) {
         <hr>
 
         <div class="form-row">
-            <div class="form-group">
-                <label>BU</label>
+            <div class="form-group"style="background-color: lime; padding:5px;">
+                <label>BU 1</label>
                 <input type="text" name="bu" list="data_bu" value="<?= htmlspecialchars($data['bu']) ?>" placeholder="Pilih atau ketik BU...">
                 <datalist id="data_bu">
                     <?= $bu_list ?>
                 </datalist>
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
                 <label>BU 2</label>
                 <input type="text" name="bu2" list="data_bu" value="<?= htmlspecialchars($data['bu2']) ?>" placeholder="Pilih atau ketik BU...">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group">
-                <label>Material</label>
+            <div class="form-group"style="background-color: lime; padding:5px;">
+                <label>Material 1</label>
                 <input type="text" name="material" list="data_material" value="<?= htmlspecialchars($data['material']) ?>" placeholder="Pilih atau ketik Material...">
                 <datalist id="data_material">
                     <?= $material_list ?>
                 </datalist>
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
                 <label>Material 2</label>
                 <input type="text" name="material2" list="data_material" value="<?= htmlspecialchars($data['material2']) ?>" placeholder="Pilih atau ketik Material...">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group">
-                <label>Keterangan</label>
+            <div class="form-group"style="background-color: lime; padding:5px;">
+                <label>Keterangan 1</label>
                 <input type="text" name="ket" value="<?= htmlspecialchars($data['ket']) ?>">
             </div>
-            <div class="form-group">
+            <div class="form-group"style="background-color: red; padding:5px;">
                 <label>Keterangan 2</label>
                 <input type="text" name="ket2" value="<?= htmlspecialchars($data['ket2']) ?>">
             </div>
@@ -210,21 +212,19 @@ while ($row = mysqli_fetch_assoc($query_material)) {
         <hr>
 
         <div class="form-row">
-            <div class="form-group">
-                <label>KM Datang</label>
+            <div class="form-group"style="background-color: lime; padding:5px;">
+                <label>KM Keluar</label>
+                <input type="number" name="km_keluar" id="km_keluar" value="<?= htmlspecialchars($data['km_keluar']) ?>">
+            </div>
+
+            <div class="form-group"style="background-color: red; padding:5px;">
+                <label>KM masuk</label>
                 <input type="number" name="km_datang" id="km_datang" value="<?= htmlspecialchars($data['km_datang']) ?>">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group">
-                <label>KM Keluar</label>
-                <input type="number" name="km_keluar" id="km_keluar" value="<?= htmlspecialchars($data['km_keluar']) ?>">
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
+            <div class="form-group"style="background-color: grey; padding:5px;">
                 <label>KM Total</label>
                 <input type="number" name="km_total" id="km_total" value="<?= htmlspecialchars($data['km_total']) ?>" readonly style="font-weight: bold; color: blue;">
             </div>
@@ -247,7 +247,7 @@ const total = document.getElementById("km_total");
 function hitungKM(){
     let d = parseInt(datang.value) || 0;
     let k = parseInt(keluar.value) || 0;
-    total.value = k - d;
+    total.value = d - k;
 }
 
 datang.addEventListener("input", hitungKM);
