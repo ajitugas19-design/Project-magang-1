@@ -10,7 +10,10 @@ include 'Router.php';
 $search_nopol = $_GET['search_nopol'] ?? '';
 $search_date  = $_GET['search_date'] ?? '';
 
-$query = "SELECT * FROM data_km WHERE 1=1";
+$query = "SELECT dk.*, k.sopir, k.kendaraan 
+          FROM data_km dk 
+          LEFT JOIN kendaraan k ON dk.nopol = k.nopol 
+          WHERE 1=1";
 
 if (!empty($search_nopol)) {
     $query .= " AND nopol LIKE '%" . mysqli_real_escape_string($koneksi, $search_nopol) . "%'";
@@ -28,7 +31,7 @@ $result = mysqli_query($koneksi, $query);
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Data KM</title>
+<title><h1>Data KM</h1></title>
 <style>
 *{ box-sizing:border-box; }
 
@@ -40,10 +43,10 @@ body {
 }
 
 .container { 
-    max-width:1500px; 
-    margin:auto; 
-    background:white; 
-    border-radius:8px;
+    max-width: 100%; 
+    margin: 0 auto; 
+    background: white; 
+    border-radius: 8px;
     box-shadow:0 2px 6px rgba(0,0,0,.1);
     overflow:hidden;
 }
@@ -115,14 +118,17 @@ body {
 table { 
     width:100%; 
     border-collapse:collapse; 
-    min-width:1500px; 
+    table-layout:fixed; 
 }
 
 th,td { 
     border:1px solid #ddd; 
-    padding:7px 8px; 
-    font-size:13px; 
-    white-space:nowrap;
+    padding:6px 4px; 
+    font-size:12px; 
+    white-space:normal;
+    word-wrap:break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 th { 
@@ -130,10 +136,11 @@ th {
     text-align:center; 
 }
 
-tbody tr { cursor:pointer; }
-
 tbody tr:hover { 
     background:#e3f2fd; 
+}
+td form button:hover {
+    background:#c82333 !important;
 }
 
 td:last-child{
@@ -177,30 +184,31 @@ td:last-child{
 <table>
 <thead>
 <tr>
-<th>KODE</th>
-<th>NOPOL</th>
-<th>SOPIR</th>
-<th>KENDARAAN</th>
-<th>STATUS</th>
-<th>TGL KELUAR</th>
-<th>JAM KELUAR</th>
-<th>BU</th>
-<th>MATERIAL</th>
-<th>KET 1</th>
-<th>TGL MASUK</th>
-<th>JAM MASUK</th>
-<th>BU 2</th>
-<th>MATERIAL 2</th>
-<th>KET 2</th>
-<th>KM KELUAR</th>
-<th>KM MASUK</th>
-<th>TOTAL KM</th>
+<th style="width:60px;">KODE</th>
+<th style="width:90px;">NOPOL</th>
+<th style="width:120px;">SOPIR</th>
+<th style="width:130px;">KENDARAAN</th>
+<th style="width:70px;">STATUS</th>
+<th style="width:90px;">TGL OUT</th>
+<th style="width:70px;">JAM OUT</th>
+<th style="width:60px;">BU 1</th>
+<th style="width:110px;">MAT. 1</th>
+<th style="width:80px;">KET 1</th>
+<th style="width:90px;">TGL IN</th>
+<th style="width:70px;">JAM IN</th>
+<th style="width:60px;">BU 2</th>
+<th style="width:110px;">MAT. 2</th>
+<th style="width:80px;">KET 2</th>
+<th style="width:80px;">KM OUT</th>
+<th style="width:80px;">KM IN</th>
+<th style="width:90px;">TOTAL</th>
+<th style="width:100px;">AKSI</th>
 </tr>
 </thead>
 <tbody>
 <?php if(mysqli_num_rows($result)>0): ?>
 <?php while($row=mysqli_fetch_assoc($result)): ?>
-<tr onclick="window.location='edit.php?id=<?= $row['id'] ?>&search_nopol=<?= urlencode($search_nopol) ?>&search_date=<?= urlencode($search_date) ?>'">
+<tr style="cursor:default;" ondblclick="window.location='edit.php?id=<?= $row['id'] ?>&search_nopol=<?= urlencode($search_nopol) ?>&search_date=<?= urlencode($search_date) ?>'">
 <td><?= htmlspecialchars($row['kode']) ?></td>
 <td><?= htmlspecialchars($row['nopol']) ?></td>
 <td><?= htmlspecialchars($row['sopir']) ?></td>
@@ -219,11 +227,19 @@ td:last-child{
 <td><?= htmlspecialchars($row['km_keluar']) ?></td>
 <td><?= htmlspecialchars($row['km_datang']) ?></td>
 <td style="font-weight:bold;"><?= htmlspecialchars($row['km_total']) ?></td>
+<td>
+    <form method="post" action="hapus.php" style="display:inline" onsubmit="return confirm('Hapus data kode <?= $row['kode'] ?> ?')">
+        <input type="hidden" name="id" value="<?= $row['id'] ?>">
+        <input type="hidden" name="search_nopol" value="<?= htmlspecialchars($search_nopol) ?>">
+        <input type="hidden" name="search_date" value="<?= htmlspecialchars($search_date) ?>">
+        <button type="submit" class="btn" style="background:#dc3545;color:white;padding:5px 10px;font-size:12px;border:none;border-radius:3px;cursor:pointer">HAPUS</button>
+    </form>
+</td>
 </tr>
 <?php endwhile; ?>
 <?php else: ?>
 <tr>
-<td colspan="18" style="text-align:center;color:#888;padding:20px;">
+<td colspan="19" style="text-align:center;color:#888;padding:20px;">
 Data tidak ditemukan
 </td>
 </tr>
@@ -234,6 +250,7 @@ Data tidak ditemukan
 </div>
 
 <p style="text-align:center;font-size:11px;color:#888;">
+    Click 2x pada table untuk mengedit
 * Klik baris untuk mengedit data
 </p>
 <a href="export_xls.php?search_date=<?= urlencode($search_date) 

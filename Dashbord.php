@@ -24,6 +24,21 @@ while ($row = mysqli_fetch_assoc($query_material)) {
     $material_list .= "<option value='" . $row['material'] . "'>";
 }
 
+// 🚀 NEW: Kendaraan datalist untuk autocomplete
+$query_kendaraan = mysqli_query($koneksi, "SELECT nopol, sopir, kendaraan FROM kendaraan ORDER BY nopol ASC");
+$kendaraan_list = "";
+$kendaraan_data = []; // JS data array
+while ($row = mysqli_fetch_assoc($query_kendaraan)) {
+    $kendaraan_list .= "<option value='" . htmlspecialchars($row['nopol']) . "'>";
+    $kendaraan_data[] = [
+        'nopol' => $row['nopol'],
+        'sopir' => $row['sopir'],
+        'kendaraan' => $row['kendaraan']
+    ];
+}
+$kendaraan_json = json_encode($kendaraan_data);
+
+
 // Query untuk mengambil kode terakhir dan generate kode baru secara otomatis
 $query_last_kode = mysqli_query($koneksi, "SELECT kode FROM data_km ORDER BY id DESC LIMIT 1");
 if (mysqli_num_rows($query_last_kode) > 0) {
@@ -120,8 +135,11 @@ if (!empty($edit_id)) {
 
         <div class="form-row">
             <div class="form-group"style="background-color: lime; padding:5px;">
-                <label>Nopol</label>
-                <input type="text" name="nopol">
+                <label>Nopol <small>(Auto)</small></label>
+                <input type="text" name="nopol" list="data_kendaraan" id="nopol_input" placeholder="Ketik nopol...">
+                <datalist id="data_kendaraan">
+                    <?= $kendaraan_list ?>
+                </datalist>
             </div>
             <div class="form-group"style="background-color: red; padding:5px;">
                 <label>Kendaraan</label>
@@ -248,6 +266,32 @@ function hitungKM(){
 datang.addEventListener("input", hitungKM);
 keluar.addEventListener("input", hitungKM);
 
+// 🚀 KENDAARAAN AUTOCOMPLETE
+const kendaraanData = <?= $kendaraan_json ?>;
+const nopolInput = document.getElementById('nopol_input');
+const sopirInput = document.querySelector('input[name="sopir"]');
+const kendaraanInput = document.querySelector('input[name="kendaraan"]');
+
+nopolInput.addEventListener('input', function() {
+    const nopol = this.value.toUpperCase().trim();
+    
+    // Cari match exact atau partial
+    const match = kendaraanData.find(item => 
+        item.nopol.toUpperCase() === nopol || 
+        item.nopol.toUpperCase().startsWith(nopol)
+    );
+    
+    if (match) {
+        sopirInput.value = match.sopir;
+        kendaraanInput.value = match.kendaraan;
+        this.style.backgroundColor = '#d4edda'; // Green tint
+    } else {
+        sopirInput.value = '';
+        kendaraanInput.value = '';
+        this.style.backgroundColor = '';
+    }
+});
+
 // Handle Enter key to move to next field
 document.querySelectorAll('input, select').forEach(function(field, index, fields) {
     field.addEventListener('keydown', function(e) {
@@ -260,6 +304,7 @@ document.querySelectorAll('input, select').forEach(function(field, index, fields
         }
     });
 });
+
 </script>
 
 </body>
