@@ -1,11 +1,10 @@
 <?php
-session_start();
+require_once 'config.php';
+
 if (!isset($_SESSION['login'])) {
-    header("Location: login.php");
+    header("Location: Router.php?page=login");
     exit;
 }
-
-include 'Router.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
     $id = $_POST['id'];

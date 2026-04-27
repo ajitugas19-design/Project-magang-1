@@ -1,5 +1,10 @@
 <?php
-include 'Router.php';
+require_once 'config.php';
+
+if (!isset($_SESSION['login'])) {
+    header("Location: Router.php?page=login");
+    exit;
+}
 
 echo "<h2>🔄 MIGRASI KENDARAAN (Final Consolidated)</h2>";
 

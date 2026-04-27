@@ -1,27 +1,27 @@
 <?php
-session_start();
-include "Router.php"; // koneksi DB
+require_once "config.php";
 
 if (isset($_POST['login'])) {
+
     $nama  = $_POST['nama'];
     $sandi = $_POST['sandi'];
 
     $query = mysqli_query($koneksi,
         "SELECT * FROM pengguna 
-         WHERE nama='$nama' AND sandi='$sandi'"
+        WHERE nama='$nama' AND sandi='$sandi'"
     );
 
-    if (mysqli_num_rows($query) > 0) {
+    if(mysqli_num_rows($query) > 0){
+
         $data = mysqli_fetch_assoc($query);
 
-        $_SESSION['login']  = true;
-        $_SESSION['nama']   = $data['nama'];
-        $_SESSION['status'] = $data['status'];
+        $_SESSION['login'] = true;
+        $_SESSION['nama']  = $data['nama'];
 
-        header("Location: Dashbord.php");
+        header("Location: Router.php?page=dashboard");
         exit;
     } else {
-        $error = "Username atau Password salah!";
+        $error = "Username / Password salah!";
     }
 }
 ?>

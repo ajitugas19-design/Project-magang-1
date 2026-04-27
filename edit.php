@@ -1,12 +1,10 @@
 <?php
-session_start();
+require_once 'config.php';
+
 if (!isset($_SESSION['login'])) {
-    header("Location: login.php");
+    header("Location: Router.php?page=login");
     exit;
 }
-
-// Include database connection
-include 'Router.php';
 
 // Get the ID from URL
 $edit_id = $_GET['id'] ?? '';

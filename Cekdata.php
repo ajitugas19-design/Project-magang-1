@@ -1,11 +1,10 @@
 <?php
-session_start();
+require_once 'config.php';
+
 if (!isset($_SESSION['login'])) {
-    header("Location: login.php");
+    header("Location: Router.php?page=login");
     exit;
 }
-
-include 'Router.php';
 
 $search_nopol = $_GET['search_nopol'] ?? '';
 $search_date  = $_GET['search_date'] ?? '';
@@ -160,7 +159,8 @@ td:last-child{
 <div class="container">
 <div class="header">
 <h2>DAFTAR DATA KM</h2>
-<a href="Dashbord.php" class="btn btn-blue">&larr; KEMBALI</a>
+<!-- GANTI tombol kembali di Cekdata.php -->
+<a href="Router.php?page=dashboard" class="btn btn-blue">&larr; KEMBALI</a>
 </div>
 
 <div class="search-section">

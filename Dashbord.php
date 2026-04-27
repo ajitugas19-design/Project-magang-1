@@ -1,33 +1,29 @@
 <?php
-date_default_timezone_set("Asia/Jakarta");
+require_once 'config.php';
 
-session_start();
 if (!isset($_SESSION['login'])) {
-    header("Location: login.php");
+    header("Location: Router.php?page=login");
     exit;
 }
-
-// Include database connection
-include 'Router.php';
 
 // Query untuk mengambil data BU (hanya value untuk datalist)
 $query_bu = mysqli_query($koneksi, "SELECT * FROM bu ORDER BY bu ASC");
 $bu_list = "";
 while ($row = mysqli_fetch_assoc($query_bu)) {
-    $bu_list .= "<option value='" . $row['bu'] . "'>";
+    $bu_list .= "<option value='" . htmlspecialchars($row['bu']) . "'>";
 }
 
 // Query untuk mengambil data Material (hanya value untuk datalist)
 $query_material = mysqli_query($koneksi, "SELECT * FROM material ORDER BY material ASC");
 $material_list = "";
 while ($row = mysqli_fetch_assoc($query_material)) {
-    $material_list .= "<option value='" . $row['material'] . "'>";
+    $material_list .= "<option value='" . htmlspecialchars($row['material']) . "'>";
 }
 
-// 🚀 NEW: Kendaraan datalist untuk autocomplete
+// Kendaraan datalist untuk autocomplete
 $query_kendaraan = mysqli_query($koneksi, "SELECT nopol, sopir, kendaraan FROM kendaraan ORDER BY nopol ASC");
 $kendaraan_list = "";
-$kendaraan_data = []; // JS data array
+$kendaraan_data = [];
 while ($row = mysqli_fetch_assoc($query_kendaraan)) {
     $kendaraan_list .= "<option value='" . htmlspecialchars($row['nopol']) . "'>";
     $kendaraan_data[] = [
@@ -37,7 +33,6 @@ while ($row = mysqli_fetch_assoc($query_kendaraan)) {
     ];
 }
 $kendaraan_json = json_encode($kendaraan_data);
-
 
 // Query untuk mengambil kode terakhir dan generate kode baru secara otomatis
 $query_last_kode = mysqli_query($koneksi, "SELECT kode FROM data_km ORDER BY id DESC LIMIT 1");
@@ -53,20 +48,9 @@ if (mysqli_num_rows($query_last_kode) > 0) {
     $kode_baru = "K-000001";
 }
 
-// Pengeditan Data
-$search_nopol = $_GET['search_nopol'] ?? '';
-$search_date = $_GET['search_date'] ?? '';
-$edit_id = $_GET['id'] ?? '';
-$data = null;
-
-if (!empty($edit_id)) {
-    $q = mysqli_query($koneksi, "SELECT * FROM data_km WHERE id='$edit_id'");
-    $data = mysqli_fetch_assoc($q);
-}
-
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,7 +74,7 @@ if (!empty($edit_id)) {
             background-color: #f8f9fa; 
             border-bottom: 1px solid #ddd;
         }
-        .navbar a {
+        .navbar a, .navbar .btn-logout {
             display: inline-block;
             padding: 8px 18px;
             background-color: #007bff;
@@ -98,125 +82,140 @@ if (!empty($edit_id)) {
             text-decoration: none;
             border-radius: 4px;
             font-weight: 500;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .navbar .btn-logout {
+            background-color: #dc3545;
         }
     </style>
 </head>
 <body>
 
-<!--Isi agar code otomatis-->
+<!-- Notifikasi Flash Message -->
     <?php if (isset($_SESSION['success'])): ?>
         <div style="background-color: #d4edda; color: #155724; padding: 15px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #c3e6cb;">
-            <?= $_SESSION['success']; ?>
+            <?= htmlspecialchars($_SESSION['success']); ?>
         </div>
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
 
     <?php if (isset($_SESSION['error'])): ?>
         <div style="background-color: #f8d7da; color: #721c24; padding: 15px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #f5c6cb;">
-            <?= $_SESSION['error']; ?>
+            <?= htmlspecialchars($_SESSION['error']); ?>
         </div>
         <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
 
 <div class="container">
     <div class="navbar">
-        <div class="left">Login sebagai: <b><?= $_SESSION['nama']; ?></b></div>
+        <div class="left">Login sebagai: <b><?= htmlspecialchars($_SESSION['nama'] ?? '') ?></b></div>
         <h2 style="margin: 0;">FORM INPUT KM</h2>
-        <div class="right"><a href="Cekdata.php">Cek Data</a></div>
+        
+        <!-- GANTI bagian ini di Dashbord.php -->
+<div class="right">
+    <a href="Router.php?page=cekdata">Cek Data</a>
+    <a href="Router.php?page=logout" class="btn-logout">Logout</a>
+</div>
+
     </div>
 
     <form method="POST" action="simpan.php">
-        <div class="form-row"style="background-color: grey; padding:5px;">
+        <div class="form-row">
             <div class="form-group">
                 <label>Kode</label>
-                <input type="text" name="kode" value="<?= $kode_baru ?>" readonly>
+                <input type="text" name="kode" value="<?= htmlspecialchars($kode_baru) ?>" readonly>
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group"style="background-color: lime; padding:5px;">
+            <div class="form-group">
                 <label>Nopol <small>(Auto)</small></label>
-                <input type="text" name="nopol" list="data_kendaraan" id="nopol_input" placeholder="Ketik nopol...">
+                <input type="text" name="nopol" list="data_kendaraan" id="nopol_input" placeholder="Ketik nopol..." required>
                 <datalist id="data_kendaraan">
                     <?= $kendaraan_list ?>
                 </datalist>
             </div>
-            <div class="form-group"style="background-color: red; padding:5px;">
+            <div class="form-group">
                 <label>Kendaraan</label>
-                <input type="text" name="kendaraan">
+                <input type="text" name="kendaraan" required>
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group"style="background-color: lime; padding:5px;">
+            <div class="form-group">
                 <label>Nama Sopir</label>
-                <input type="text" name="sopir">
+                <input type="text" name="sopir" required>
             </div>
-            <div class="form-group"style="background-color: red; padding:5px;">
-    <label>Status</label>
-    <input type="text" id="statusInput" name="status" value="CLOSE" class="form-control">
-    </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" required>
+                    <option value="CLOSE" selected>CLOSE</option>
+                    <option value="OPEN">OPEN</option>
+                </select>
+            </div>
         </div>
 
         <hr>
 
         <div class="form-row">
-            <div class="form-group"style="background-color: lime; padding:5px;">
+            <div class="form-group">
                 <label>Tanggal Keluar</label>
-                <input type="date" name="tgl_out" value="<?= date('Y-m-d') ?>">
+                <input type="date" name="tgl_out" value="<?= date('Y-m-d') ?>" required>
             </div>
-            <div class="form-group"style="background-color: red; padding:5px;">
+            <div class="form-group">
                 <label>Tanggal Masuk</label>
                 <input type="date" name="tgl_in" value="<?= date('Y-m-d') ?>">
             </div>
         </div>
 
         <div class="form-row">
-    <div class="form-group"style="background-color: lime; padding:5px;">
-        <label>Jam Keluar</label>
-        <input type="time" name="jam_out" value="<?= date('H:i') ?>">
-    </div>
-    <div class="form-group"style="background-color: red; padding:5px;">
-        <label>Jam Masuk</label>
-        <input type="time" name="jam_in" value="<?= date('H:i') ?>">
-    </div>
-</div>
+            <div class="form-group">
+                <label>Jam Keluar</label>
+                <input type="time" name="jam_out" value="<?= date('H:i') ?>" required>
+            </div>
+            <div class="form-group">
+                <label>Jam Masuk</label>
+                <input type="time" name="jam_in" value="<?= date('H:i') ?>">
+            </div>
+        </div>
         <hr>
 
         <div class="form-row">
-            <div class="form-group"style="background-color: lime; padding:5px;">
+            <div class="form-group">
                 <label>BU 1</label>
                 <input type="text" name="bu" list="data_bu" placeholder="Pilih atau ketik BU...">
                 <datalist id="data_bu">
                     <?= $bu_list ?>
                 </datalist>
             </div>
-            <div class="form-group"style="background-color: red; padding:5px;">
+            <div class="form-group">
                 <label>BU 2</label>
                 <input type="text" name="bu2" list="data_bu" placeholder="Pilih atau ketik BU...">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group"style="background-color: lime; padding:5px;">
+            <div class="form-group">
                 <label>Material 1</label>
                 <input type="text" name="material" list="data_material" placeholder="Pilih atau ketik Material...">
                 <datalist id="data_material">
                     <?= $material_list ?>
                 </datalist>
             </div>
-            <div class="form-group"style="background-color: red; padding:5px;">
+            <div class="form-group">
                 <label>Material 2</label>
                 <input type="text" name="material2" list="data_material" placeholder="Pilih atau ketik Material...">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group"style="background-color: lime; padding:5px;">
+            <div class="form-group">
                 <label>Keterangan 1</label>
                 <input type="text" name="ket">
             </div>
-            <div class="form-group"style="background-color: red; padding:5px;">
+            <div class="form-group">
                 <label>Keterangan 2</label>
                 <input type="text" name="ket2">
             </div>
@@ -225,19 +224,19 @@ if (!empty($edit_id)) {
         <hr>
 
          <div class="form-row">
-            <div class="form-group"style="background-color: lime; padding:5px;">
+            <div class="form-group">
                 <label>KM Keluar</label>
-                <input type="number" name="km_keluar" id="km_keluar">
+                <input type="number" name="km_keluar" id="km_keluar" required>
             </div>
         
-            <div class="form-group"style="background-color: red; padding:5px;">
+            <div class="form-group">
                 <label>KM Masuk</label>
                 <input type="number" name="km_datang" id="km_datang">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group"style="background-color: gray; padding:5px;">
+            <div class="form-group">
                 <label>KM Total</label>
                 <input type="number" name="km_total" id="km_total" readonly style="font-weight: bold; color: blue;">
             </div>
@@ -260,13 +259,13 @@ const total = document.getElementById("km_total");
 function hitungKM(){
     let d = parseInt(datang.value) || 0;
     let k = parseInt(keluar.value) || 0;
-    total.value = d - k;
+    total.value = Math.max(0, d - k);
 }
 
 datang.addEventListener("input", hitungKM);
 keluar.addEventListener("input", hitungKM);
 
-// 🚀 KENDAARAAN AUTOCOMPLETE
+// KENDARAAN AUTOCOMPLETE
 const kendaraanData = <?= $kendaraan_json ?>;
 const nopolInput = document.getElementById('nopol_input');
 const sopirInput = document.querySelector('input[name="sopir"]');
@@ -309,3 +308,4 @@ document.querySelectorAll('input, select').forEach(function(field, index, fields
 
 </body>
 </html>
+

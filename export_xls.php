@@ -1,11 +1,10 @@
 <?php
-session_start();
+require_once 'config.php';
+
 if (!isset($_SESSION['login'])) {
-    header("Location: login.php");
+    header("Location: Router.php?page=login");
     exit;
 }
-
-include 'Router.php';
 
 $search_nopol = $_GET['search_nopol'] ?? '';
 $search_date  = $_GET['search_date'] ?? '';
