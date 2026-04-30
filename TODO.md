@@ -1,13 +1,19 @@
-# TODO - Perbaikan Dashbord.php
+# TODO - Update KM Total Formula
 
-## Langkah-langkah:
+## Task: Ubah formula km_total = km_keluar - km_masuk (km_datang)
 
-1. [x] Bersihkan kode edit yang tidak terpakai ($edit_id, $data, $search_nopol, $search_date)
-2. [x] Perbaiki keamanan SQL Injection pada query (tambah escaping)
-3. [x] Tambahkan htmlspecialchars() pada semua output PHP ke HTML
-4. [x] Hapus warna background debug (grey, lime, red) pada form rows
-5. [x] Tambah tombol Logout di navbar
-6. [x] Ubah input Status menjadi dropdown (OPEN/CLOSE)
-7. [x] Tambah atribut required pada field kritis
-8. [x] Perbaiki perhitungan KM agar tidak negatif
-9. [x] Rapikan dan konsistenkan struktur kode
+### Progress:
+- [x] Analisis file (Dashbord.php, edit.php, simpan.php)
+- [x] Edit Dashbord.php - ubah formula JS
+- [x] Edit edit.php - ubah formula JS
+- [ ] Testing
+
+### Detail Perubahan:
+
+**Old Formula:** `km_total = km_datang - km_keluar`
+**New Formula:** `km_total = km_keluar - km_datang`
+
+### File yang Diedit:
+
+1. Dashbord.php - line ~190 (function hitungKM)
+2. edit.php - line ~200 (function hitungKM)

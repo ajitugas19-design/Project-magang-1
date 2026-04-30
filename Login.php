@@ -1,28 +1,37 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once "config.php";
+
+if (isset($_SESSION['login'])) {
+    header("Location: Router.php?page=dashboard");
+    exit;
+}
 
 if (isset($_POST['login'])) {
 
-    $nama  = $_POST['nama'];
-    $sandi = $_POST['sandi'];
+    $nama  = mysqli_real_escape_string($koneksi, $_POST['nama']);
+    $sandi = mysqli_real_escape_string($koneksi, $_POST['sandi']);
 
     $query = mysqli_query($koneksi,
-        "SELECT * FROM pengguna 
-        WHERE nama='$nama' AND sandi='$sandi'"
+        "SELECT * FROM pengguna WHERE nama='$nama' LIMIT 1"
     );
 
-    if(mysqli_num_rows($query) > 0){
+    if ($data = mysqli_fetch_assoc($query)) {
 
-        $data = mysqli_fetch_assoc($query);
+        // ⚠️ kalau masih plain text
+        if ($sandi === $data['sandi']) {
 
-        $_SESSION['login'] = true;
-        $_SESSION['nama']  = $data['nama'];
+            $_SESSION['login'] = true;
+            $_SESSION['nama']  = $data['nama'];
 
-        header("Location: Router.php?page=dashboard");
-        exit;
-    } else {
-        $error = "Username / Password salah!";
+            header("Location: Router.php?page=dashboard");
+            exit;
+        }
     }
+
+    $error = "Username / Password salah!";
 }
 ?>
 

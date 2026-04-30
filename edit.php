@@ -263,7 +263,7 @@ const total = document.getElementById("km_total");
 function hitungKM(){
     let d = parseInt(datang.value) || 0;
     let k = parseInt(keluar.value) || 0;
-    total.value = d - k;
+    total.value = Math.max(0, k - d);
 }
 
 datang.addEventListener("input", hitungKM);

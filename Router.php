@@ -1,14 +1,20 @@
 <?php
-// GANTI Router.php menjadi ini
-
+session_start();
 require_once "config.php";
 
-$page = $_GET['page'] ?? 'login';
+$page = $_GET['page'] ?? 'dashboard';
 
+// ================= PROTEKSI =================
+if (!isset($_SESSION['login'])) {
+    $page = 'login';
+}
+
+// Kalau sudah login, tidak boleh balik ke login
 if (isset($_SESSION['login']) && $page == 'login') {
     $page = 'dashboard';
 }
 
+// ================= ROUTING =================
 switch ($page) {
 
     case 'dashboard':
@@ -29,6 +35,6 @@ switch ($page) {
         exit;
 
     default:
-        echo "Halaman tidak ditemukan";
+        echo "<h3>Halaman tidak ditemukan</h3>";
 }
 ?>

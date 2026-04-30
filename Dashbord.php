@@ -1,6 +1,4 @@
 <?php
-require_once 'config.php';
-
 if (!isset($_SESSION['login'])) {
     header("Location: Router.php?page=login");
     exit;
@@ -139,7 +137,7 @@ if (mysqli_num_rows($query_last_kode) > 0) {
             </div>
             <div class="form-group">
                 <label>Kendaraan</label>
-                <input type="text" name="kendaraan" required>
+                <input type="text" name="kendaraan">
             </div>
         </div>
 
@@ -166,7 +164,7 @@ if (mysqli_num_rows($query_last_kode) > 0) {
             </div>
             <div class="form-group">
                 <label>Tanggal Masuk</label>
-                <input type="date" name="tgl_in" value="<?= date('Y-m-d') ?>">
+                <input type="date" name="tgl_in" >
             </div>
         </div>
 
@@ -177,7 +175,7 @@ if (mysqli_num_rows($query_last_kode) > 0) {
             </div>
             <div class="form-group">
                 <label>Jam Masuk</label>
-                <input type="time" name="jam_in" value="<?= date('H:i') ?>">
+                <input type="time" name="jam_in" >
             </div>
         </div>
         <hr>
@@ -259,7 +257,7 @@ const total = document.getElementById("km_total");
 function hitungKM(){
     let d = parseInt(datang.value) || 0;
     let k = parseInt(keluar.value) || 0;
-    total.value = Math.max(0, d - k);
+    total.value = Math.max(0, k - d);
 }
 
 datang.addEventListener("input", hitungKM);
